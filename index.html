@@ -1,0 +1,725 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERTAKLAR OLAMI ✨</title>
+
+<style>
+:root {
+  --bg:#eefaff;
+  --card:#ffffff;
+  --text:#20364b;
+  --blue:#39b9dc;
+  --gold:#e8bd65;
+  --muted:#71889a;
+}
+body.dark {
+  --bg:#17152d;
+  --card:#26213e;
+  --text:#fff2ff;
+  --blue:#a58bff;
+  --gold:#ffd47c;
+  --muted:#c1b6d7;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:Georgia,serif;
+  transition:.5s;
+  overflow-x:hidden;
+}
+button {cursor:pointer;font-family:inherit}
+header {
+  background:var(--card);
+  border-bottom:2px solid var(--gold);
+  padding:17px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+.logo {font-size:23px;color:var(--blue);font-weight:bold}
+nav {display:flex;gap:12px;flex-wrap:wrap}
+nav button {
+  background:none;border:0;color:var(--text);
+  font-size:15px;padding:7px;
+}
+nav button:hover {color:var(--blue)}
+.theme {
+  background:var(--blue);color:white;
+  padding:10px 15px;border:0;border-radius:20px;
+}
+main {max-width:1200px;margin:auto;padding:25px 5%;min-height:75vh}
+.page {display:none}
+.page.active {display:block}
+h1,h2 {color:var(--blue)}
+/* Sehrli fon */
+.magic-bg {
+  position:fixed;inset:0;pointer-events:none;
+  overflow:hidden;z-index:-1;
+}
+.spark {
+  position:absolute;
+  color:var(--gold);
+  animation:twinkle 3s infinite alternate;
+}
+@keyframes twinkle {
+  from {opacity:.2;transform:scale(.6)}
+  to {opacity:1;transform:scale(1.5)}
+}
+.smoke {
+  position:absolute;
+  width:250px;height:250px;
+  border-radius:50%;
+  background:radial-gradient(circle,#63dfff55,transparent 70%);
+  filter:blur(35px);
+  animation:smoke 9s infinite alternate ease-in-out;
+}
+@keyframes smoke {
+  from {transform:translate(-30px,30px) scale(.8)}
+  to {transform:translate(80px,-50px) scale(1.5)}
+}
+/* Kirish */
+#intro {
+  min-height:100vh;
+  background:radial-gradient(ellipse,#164e75,#071b39 75%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  overflow:hidden;
+  position:relative;
+  color:white;
+  text-align:center;
+  padding:25px;
+}
+.intro-title {
+  font-size:clamp(35px,7vw,65px);
+  color:#ffe5a4;
+  text-shadow:0 0 25px #58dfff;
+  margin-bottom:25px;
+  letter-spacing:3px;
+}
+.intro-sub {color:#d5f4ff;margin-bottom:35px}
+.book-scene {
+  perspective:1200px;
+  width:min(310px,80vw);
+  height:390px;
+  position:relative;
+  animation:float 3s infinite ease-in-out;
+}
+@keyframes float {
+  0%,100% {transform:translateY(0) rotate(-2deg)}
+  50% {transform:translateY(-22px) rotate(2deg)}
+}
+.book-cover {
+  position:absolute;inset:0;
+  border:5px solid #f4d28a;
+  border-radius:12px 22px 22px 12px;
+  background:linear-gradient(120deg,#086d9c,#172b6d,#452d76);
+  box-shadow:0 0 35px #53dfff99,12px 15px 0 #8c6338;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  padding:20px;
+}
+.book-cover:before {
+  content:"";
+  position:absolute;inset:10px;
+  border:2px solid #f7d98e;
+  border-radius:8px 15px 15px 8px;
+}
+.book-cover h2 {
+  color:#ffe4a0;font-size:32px;
+  text-shadow:0 0 15px #fff;
+  z-index:1;
+}
+.book-cover .cover-emoji {font-size:65px;margin:25px}
+.cover-decoration {color:#ffe3a0;font-size:22px}
+.open-btn {
+  margin-top:55px;
+  padding:16px 35px;
+  border-radius:30px;
+  background:linear-gradient(90deg,#ffe2a0,#52d7ff);
+  border:2px solid white;
+  color:#15395a;
+  font-size:18px;
+  font-weight:bold;
+  box-shadow:0 0 25px #57dfff;
+}
+.open-btn:hover {transform:scale(1.08)}
+#intro.leaving {animation:leave 1s forwards}
+@keyframes leave {
+  to {opacity:0;transform:scale(1.2);visibility:hidden}
+}
+/* Kitob ertak oynasi */
+.story-section {
+  text-align:center;
+  padding:35px 10px;
+}
+.story-section h1 {font-size:36px;margin-bottom:15px}
+.story-book {
+  margin:35px auto;
+  width:min(760px,100%);
+  min-height:400px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  perspective:1200px;
+  filter:drop-shadow(0 15px 15px #1b718044);
+}
+.story-page {
+  background:#fff8e9;
+  color:#453b33;
+  padding:28px;
+  min-height:400px;
+  border:2px solid #e3c38b;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  line-height:1.8;
+  position:relative;
+}
+.story-page:first-child {
+  border-radius:14px 0 0 14px;
+  border-right:1px dashed #cba76d;
+}
+.story-page:last-child {
+  border-radius:0 14px 14px 0;
+}
+.story-page h2 {color:#9463b6;margin-bottom:15px}
+.story-emoji {font-size:75px;margin:15px;animation:bounce 2s infinite}
+@keyframes bounce {
+  0%,100% {transform:translateY(0) rotate(-5deg)}
+  50% {transform:translateY(-15px) rotate(5deg)}
+}
+.story-page.flip {animation:pageFlip .65s}
+@keyframes pageFlip {
+  from {transform:rotateY(-90deg);opacity:.2}
+  to {transform:rotateY(0);opacity:1}
+}
+.story-controls {display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
+.magic-btn {
+  background:var(--blue);color:white;
+  border:2px solid var(--gold);
+  padding:13px 23px;border-radius:25px;font-size:16px;
+}
+.magic-btn:hover {filter:brightness(1.1);transform:translateY(-3px)}
+/* Do'kon */
+.hero {
+  background:linear-gradient(120deg,#76d8ed,#a8a5f4);
+  color:#183b57;
+  padding:45px 25px;
+  border-radius:22px;
+  text-align:center;
+  margin-bottom:30px;
+}
+.hero h1 {color:#153e63;font-size:38px;margin-bottom:12px}
+.section-title {margin:30px 0 20px}
+.search {
+  width:100%;padding:15px;
+  border:2px solid var(--blue);
+  background:var(--card);color:var(--text);
+  border-radius:15px;margin-bottom:25px;
+  font-size:16px;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:20px;
+}
+.book-card {
+  background:var(--card);
+  border:2px solid var(--gold);
+  border-radius:18px;
+  padding:17px;
+  text-align:center;
+  transition:.3s;
+}
+.book-card:hover {transform:translateY(-8px) rotate(-1deg)}
+.book-cover-img {
+  width:100%;height:210px;object-fit:cover;
+  border-radius:12px;
+}
+.book-card h3 {margin:13px 0}
+.book-card p {color:var(--muted);margin:7px 0;font-size:14px}
+.price {color:var(--blue);font-size:19px;font-weight:bold;margin:12px}
+.card-actions {display:flex;gap:7px;flex-wrap:wrap}
+.card-actions button {
+  flex:1;padding:10px 5px;
+  border:0;border-radius:10px;
+  background:var(--blue);color:white;
+}
+.card-actions .heart {background:#ed779e}
+.empty {
+  background:var(--card);padding:35px;
+  border-radius:15px;text-align:center;
+  color:var(--muted);
+}
+.cart-item {
+  padding:17px;background:var(--card);
+  border:1px solid var(--gold);
+  margin:12px 0;border-radius:12px;
+  display:flex;justify-content:space-between;
+  gap:10px;align-items:center;
+}
+footer {
+  background:var(--card);padding:25px;
+  text-align:center;border-top:2px solid var(--gold);
+  color:var(--muted);
+}
+.modal {
+  display:none;position:fixed;inset:0;
+  background:#000b;z-index:50;
+  justify-content:center;align-items:center;padding:15px;
+}
+.modal.show {display:flex}
+.modal-box {
+  background:var(--card);color:var(--text);
+  padding:30px;border-radius:20px;
+  width:min(600px,100%);line-height:1.8;
+}
+.close {float:right;border:0;background:none;color:var(--text);font-size:25px}
+.friendly {font-size:35px;margin:15px}
+@media(max-width:600px) {
+  header {justify-content:center}
+  nav {justify-content:center}
+  .story-book {grid-template-columns:1fr}
+  .story-page {min-height:260px}
+  .story-page:first-child {border-radius:14px 14px 0 0}
+  .story-page:last-child {border-radius:0 0 14px 14px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="magic-bg" id="magicBg">
+  <div class="smoke" style="top:10%;left:5%"></div>
+  <div class="smoke" style="bottom:5%;right:5%"></div>
+</div>
+
+<!-- BIRINCHI KIRISH -->
+
+<section id="intro">
+  <div class="intro-title">✨ ERTАKLAR OLAMI ✨</div>
+  <p class="intro-sub">Sehrli kitob eshiklarini ochishga tayyormisiz?</p>
+
+  <div class="book-scene">
+    <div class="book-cover">
+      <div class="cover-decoration">✦ ❀ ✦</div>
+      <div class="cover-emoji">📖✨</div>
+      <h2>ERTAKLAR<br>OLAMI</h2>
+      <div class="cover-decoration">❀ ✧ ❀</div>
+    </div>
+  </div>
+
+  <button class="open-btn" onclick="enterWorld()">
+    📖 Kitobni ochish
+  </button>
+
+  <p style="margin-top:25px;color:#b8edff">
+    🦋 Sehrli sayohat sizni kutmoqda 🦄
+  </p>
+</section>
+
+<!-- ASOSIY SAYT -->
+
+<header id="header" style="display:none">
+  <div class="logo">📚 ERTАKLAR OLAMI</div>
+  <nav>
+    <button onclick="showPage('home')">🏠 Bosh sahifa</button>
+    <button onclick="showPage('stories')">🧚 Ertaklar</button>
+    <button onclick="showPage('books')">📚 Kitoblar</button>
+    <button onclick="showPage('favorites')">❤️ Sevimlilar</button>
+    <button onclick="showPage('cart')">🛒 Savatcha</button>
+    <button onclick="showPage('about')">🌟 Biz haqimizda</button>
+  </nav>
+  <button class="theme" onclick="toggleTheme()">🌙 / ☀️</button>
+</header>
+
+<main id="main" style="display:none">
+
+<section id="home" class="page active">
+  <div class="hero">
+    <h1>🦄 Sehrli olamga xush kelibsiz!</h1>
+    <p>Bu yerda har bir kitob yangi sarguzasht, har bir sahifa yangi mo'jiza!</p>
+    <button class="magic-btn" onclick="showPage('stories')">Ertakni boshlash ✨</button>
+  </div>
+  <h2 class="section-title">🌟 Sizni kutayotgan kitoblar</h2>
+  <div class="grid" id="homeBooks"></div>
+</section>
+
+<!-- ERTAKLAR -->
+
+<section id="stories" class="page story-section">
+  <h1>🧚 Sehrli ertaklar kitobi</h1>
+  <p>Har bir sahifada yangi sarguzasht yashiringan!</p>
+
+  <div class="story-book">
+    <div class="story-page" id="leftPage">
+      <h2 id="leftTitle">Sehrli o'rmon</h2>
+      <div class="story-emoji" id="leftEmoji">🦄</div>
+      <p id="leftText">Bir bor ekan, bir yo'q ekan...</p>
+    </div>
+
+    <div class="story-page" id="rightPage">
+      <h2 id="rightTitle">Yangi do'stlar</h2>
+      <div class="story-emoji" id="rightEmoji">🧚</div>
+      <p id="rightText">Sehrli o'rmonda kichkina pari yashar ekan.</p>
+    </div>
+  </div>
+
+  <div class="story-controls">
+    <button class="magic-btn" onclick="previousStory()">← Oldingi varaq</button>
+    <button class="magic-btn" onclick="nextStory()">Keyingi varaq →</button>
+  </div>
+  <p id="storyCount" style="margin-top:20px"></p>
+</section>
+
+<!-- KITOBLAR -->
+
+<section id="books" class="page">
+  <h1 class="section-title">📚 Sehrli kitoblar do'koni</h1>
+  <input class="search" id="search"
+    placeholder="🔎 Kitob nomini qidiring..."
+    oninput="renderBooks()">
+  <div class="grid" id="allBooks"></div>
+</section>
+
+<!-- SEVIMLILAR -->
+
+<section id="favorites" class="page">
+  <h1 class="section-title">❤️ Mening sevimli kitoblarim</h1>
+  <div class="grid" id="favoriteBooks"></div>
+</section>
+
+<!-- SAVATCHA -->
+
+<section id="cart" class="page">
+  <h1 class="section-title">🛒 Savatcham</h1>
+  <div id="cartItems"></div>
+  <h2 id="total" style="margin-top:25px"></h2>
+  <button class="magic-btn" onclick="checkout()">Buyurtma berish ✨</button>
+</section>
+
+<!-- BIZ HAQIMIZDA -->
+
+<section id="about" class="page">
+  <div class="hero">
+    <h1>🌈 Biz haqimizda</h1>
+    <p>ERTAKLAR OLAMI — kitoblar, sehr va tasavvur uchrashadigan joy!</p>
+    <div class="friendly">🧚 🦄 👻 🐲 🦋</div>
+  </div>
+  <h2>Bizning maqsadimiz</h2>
+  <p style="line-height:2;margin-top:15px">
+    Har bir insonning qalbida kichkina ertak yashaydi.
+    Bizning maqsadimiz — bolalar va kitobsevarlar uchun
+    quvnoq, sehrli va qiziqarli kitoblar olamini yaratish.
+  </p>
+  <h2 style="margin-top:25px">Aloqa</h2>
+  <p style="margin-top:15px">📧 bookstore@example.com</p>
+  <p style="margin-top:10px">✨ ERTAKLAR OLAMI — 2026</p>
+</section>
+
+</main>
+
+<footer id="footer" style="display:none">
+  ✨ ERTAKLAR OLAMI | Har bir kitob — yangi sehr! 📖
+</footer>
+
+<!-- O'QISH OYNASI -->
+
+<div class="modal" id="reader">
+  <div class="modal-box">
+    <button class="close" onclick="closeReader()">×</button>
+    <h2 id="readerTitle"></h2>
+    <div class="friendly">📖✨</div>
+    <p id="readerText"></p>
+    <button class="magic-btn" onclick="closeReader()">Yopish</button>
+  </div>
+</div>
+
+<script>
+
+// Sehrli yulduzchalar
+
+const bg = document.getElementById("magicBg");
+
+for(let i=0;i<35;i++) {
+  const s=document.createElement("span");
+  s.className="spark";
+  s.textContent=["✦","✨","⭐","🦋"][i%4];
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  s.style.animationDelay=Math.random()*3+"s";
+  bg.appendChild(s);
+}
+
+// Birinchi kirish
+
+function enterWorld() {
+  const intro=document.getElementById("intro");
+  intro.classList.add("leaving");
+
+  setTimeout(()=>{
+    intro.style.display="none";
+    document.getElementById("header").style.display="flex";
+    document.getElementById("main").style.display="block";
+    document.getElementById("footer").style.display="block";
+    window.scrollTo(0,0);
+  },900);
+}
+
+// 2026 kitoblar — demo katalog
+
+const books=[
+ {
+  id:1,title:"Ertaklar olami",author:"Sehrli hikoyalar",
+  year:2026,price:45000,emoji:"🦄",
+  image:"https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500",
+  description:"Sehrli olam va ajoyib qahramonlar.",
+  sample:"Bir bor ekan, bir yo'q ekan. Uzoq bir sehrli diyorda quvnoq bir unicorn yashar ekan. Uning eng katta orzusi dunyodagi barcha bolalarni kuldirish ekan..."
+ },
+ {
+  id:2,title:"Sehrli o'rmon",author:"Ertaklar to'plami",
+  year:2026,price:50000,emoji:"🌳",
+  image:"https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500",
+  description:"O'rmondagi quvnoq do'stlar.",
+  sample:"O'rmonda kichkina ajdar yashar ekan. U hech kimni qo'rqitmas, aksincha hamma bilan do'st bo'lishni xohlarkan..."
+ },
+ {
+  id:3,title:"Kichkina ajdar",author:"Sehrli qalam",
+  year:2026,price:42000,emoji:"🐲",
+  image:"https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=500",
+  description:"Mehribon ajdarning sarguzashtlari.",
+  sample:"Kichkina ajdar olov o'rniga rang-barang pufakchalar chiqarar ekan. Uning do'stlari bundan juda xursand bo'lisharkan..."
+ },
+ {
+  id:4,title:"Parilar bog'i",author:"Sehrli dunyo",
+  year:2026,price:48000,emoji:"🧚",
+  image:"https://images.unsplash.com/photo-1513001900722-370f803f498d?w=500",
+  description:"Parilar va sehrli gullar haqidagi ertak.",
+  sample:"Bir kuni kichkina pari sehrli gulni topib olibdi. Gul unga eng yaxshi sehr mehribonlik ekanini o'rgatibdi..."
+ },
+ {
+  id:5,title:"Quvnoq mahluqchalar",author:"Kulgu ertaklari",
+  year:2026,price:39000,emoji:"👻",
+  image:"https://images.unsplash.com/photo-1510172951991-856a654063f9?w=500",
+  description:"Kulgili va mehribon mahluqchalar.",
+  sample:"Bir shaharchada uchta kulgili mahluq yashar ekan. Biri doim aksa urar, biri qo'shiq aytar, uchinchisi esa hammaga sovg'a tarqatar ekan..."
+ }
+];
+
+let favorites=JSON.parse(localStorage.getItem("favorites")||"[]");
+let cart=JSON.parse(localStorage.getItem("cart")||"[]");
+
+// Sahifalar
+
+function showPage(id) {
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ if(id==="favorites")renderFavorites();
+ if(id==="cart")renderCart();
+ if(id==="books")renderBooks();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+// Rejim
+
+function toggleTheme() {
+ document.body.classList.toggle("dark");
+ localStorage.setItem("theme",
+  document.body.classList.contains("dark")?"dark":"light");
+}
+
+if(localStorage.getItem("theme")==="dark")
+ document.body.classList.add("dark");
+
+// Kitob kartalari
+
+function card(b) {
+ return `
+ <div class="book-card">
+  <img class="book-cover-img" src="${b.image}"
+   alt="${b.title}"
+   onerror="this.src='https://placehold.co/400x500/9bdcf0/234?text=BOOK'">
+  <h3>${b.emoji} ${b.title}</h3>
+  <p>✍️ ${b.author}</p>
+  <p>📅 ${b.year}</p>
+  <p>${b.description}</p>
+  <div class="price">${b.price.toLocaleString("uz-UZ")} so'm</div>
+  <div class="card-actions">
+   <button onclick="readBook(${b.id})">📖 O'qish</button>
+   <button class="heart" onclick="toggleFavorite(${b.id})">
+    ${favorites.includes(b.id)?"❤️":"🤍"}
+   </button>
+   <button onclick="addCart(${b.id})">🛒</button>
+  </div>
+ </div>`;
+}
+
+function renderHome() {
+ document.getElementById("homeBooks").innerHTML=
+ books.slice(0,3).map(card).join("");
+}
+
+function renderBooks() {
+ const q=document.getElementById("search").value.toLowerCase();
+ const filtered=books.filter(b=>
+  (b.title+" "+b.author).toLowerCase().includes(q));
+ document.getElementById("allBooks").innerHTML=
+ filtered.length?filtered.map(card).join():
+ '<div class="empty">Kitob topilmadi 😔</div>';
+}
+
+// Sevimlilar
+
+function toggleFavorite(id) {
+ favorites=favorites.includes(id)?
+ favorites.filter(x=>x!==id):[...favorites,id];
+
+ localStorage.setItem("favorites",JSON.stringify(favorites));
+ renderBooks();renderHome();renderFavorites();
+}
+
+function renderFavorites() {
+ const list=books.filter(b=>favorites.includes(b.id));
+ document.getElementById("favoriteBooks").innerHTML=
+ list.length?list.map(card).join():
+ '<div class="empty">Hali kitob saqlanmagan ❤️</div>';
+}
+
+// O'qish
+
+function readBook(id) {
+ const b=books.find(x=>x.id===id);
+ document.getElementById("readerTitle").textContent=b.title;
+ document.getElementById("readerText").textContent=b.sample;
+ document.getElementById("reader").classList.add("show");
+}
+
+function closeReader() {
+ document.getElementById("reader").classList.remove("show");
+}
+
+// Savatcha
+
+function addCart(id) {
+ cart.push(id);
+ localStorage.setItem("cart",JSON.stringify(cart));
+ alert("Kitob savatchaga qo'shildi! 📚");
+}
+
+function renderCart() {
+ const list=cart.map(id=>books.find(b=>b.id===id)).filter(Boolean);
+
+ document.getElementById("cartItems").innerHTML=
+ list.length?list.map((b,i)=>`
+ <div class="cart-item">
+  <span>${b.emoji} ${b.title}<br>${b.price.toLocaleString("uz-UZ")} so'm</span>
+  <button class="magic-btn" onclick="removeCart(${i})">O'chirish</button>
+ </div>`).join(""):'<div class="empty">Savatcha bo‘sh 🛒</div>';
+
+ const total=list.reduce((s,b)=>s+b.price,0);
+ document.getElementById("total").textContent=
+ "Jami: "+total.toLocaleString("uz-UZ")+" so'm";
+}
+
+function removeCart(i) {
+ cart.splice(i,1);
+ localStorage.setItem("cart",JSON.stringify(cart));
+ renderCart();
+}
+
+function checkout() {
+ if(!cart.length) {
+  alert("Savatchangiz bo'sh!");
+  return;
+ }
+ alert("Bu demo do'kon. Haqiqiy buyurtma uchun to'lov tizimi kerak.");
+}
+
+// ERTAKLAR VA VAROQ ALMASHTIRISH
+
+const stories=[
+ {
+  title:"Sehrli o'rmon",
+  emoji:"🦄",
+  text:"Bir bor ekan, bir yo'q ekan. Moviy tog'lar ortida sehrli o'rmon bor ekan. U yerda mehribon unicorn yashar ekan."
+ },
+ {
+  title:"Kichkina pari",
+  emoji:"🧚",
+  text:"Bir kuni unicorn o'rmonda kichkina parini uchratibdi. Pari unga sehrli gulni ko'rsatibdi. Gul faqat mehribon insonlarga ochilar ekan."
+ },
+ {
+  title:"Quvnoq ajdar",
+  emoji:"🐲",
+  text:"Ular yo'lda kichkina ajdarga duch kelishibdi. Ajdar ularga rangli pufakchalar sovg'a qilibdi. Uchovlon do'st bo'lishibdi."
+ },
+ {
+  title:"Kulgili arvoq",
+  emoji:"👻",
+  text:"Bir daraxt ortidan oppoq, kulgili arvoq chiqibdi. U qo'rqinchli emas, juda quvnoq ekan. Hammaga raqs tushishni o'rgatibdi!"
+ },
+ {
+  title:"Sehrli bayram",
+  emoji:"🎃",
+  text:"Do'stlar katta bayram uyushtirishibdi. Atrofda yulduzlar porlab, rangli chiroqlar yonibdi. Barcha xursand bo'libdi!"
+ },
+ {
+  title:"Baxtli yakun",
+  emoji:"🌈",
+  text:"Shundan keyin ular doimo birga sayohat qilishibdi. Ular tushunishibdiki, eng katta sehr — do'stlik va mehribonlik ekan!"
+ }
+];
+
+let storyIndex=0;
+
+function renderStory() {
+ const a=stories[storyIndex];
+ const b=stories[(storyIndex+1)%stories.length];
+
+ ["leftPage","rightPage"].forEach(id=>{
+  const el=document.getElementById(id);
+  el.classList.remove("flip");
+  void el.offsetWidth;
+  el.classList.add("flip");
+ });
+
+ document.getElementById("leftTitle").textContent=a.title;
+ document.getElementById("leftEmoji").textContent=a.emoji;
+ document.getElementById("leftText").textContent=a.text;
+
+ document.getElementById("rightTitle").textContent=b.title;
+ document.getElementById("rightEmoji").textContent=b.emoji;
+ document.getElementById("rightText").textContent=b.text;
+
+ document.getElementById("storyCount").textContent=
+ "📖 "+(storyIndex+1)+" / "+stories.length+"-varaq";
+}
+
+function nextStory() {
+ storyIndex=(storyIndex+1)%stories.length;
+ renderStory();
+}
+
+function previousStory() {
+ storyIndex=(storyIndex-1+stories.length)%stories.length;
+ renderStory();
+}
+
+renderStory();
+renderHome();
+renderBooks();
+
+</script>
+</body>
+</html>
